@@ -1,0 +1,25 @@
+{
+  "name": "bp-slack-notifier",
+  "version": "1.0.0",
+  "description": "fibos bp slack notifier",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fibos-team/bp-slack-notifier.git"
+  },
+  "keywords": [
+    "fibos",
+    "bp",
+    "slack",
+    "notifier"
+  ],
+  "author": "paddingme",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fibos-team/bp-slack-notifier/issues"
+  },
+  "homepage": "https://github.com/fibos-team/bp-slack-notifier#readme"
+}
