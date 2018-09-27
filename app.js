@@ -2,7 +2,7 @@
  * @Author: PaddingMe (BP:liuqiangdong)
  * @Date: 2018-09-27 18:55:37
  * @Last Modified by: PaddingMe
- * @Last Modified time: 2018-09-28 02:46:35
+ * @Last Modified time: 2018-09-28 02:46:54
  */
 
 const { createServer } = require('bottender/express')
@@ -18,6 +18,8 @@ const path = require('path')
 
 dotenv.load({ path: '.env' })
 
+const slackController = require('./controllers/slack')
+
 const { bot } = require('./services')
 const app = createServer(bot)
 
@@ -32,6 +34,8 @@ app.use(compression())
 app.use(expressStatusMonitor())
 app.use(logger('dev'))
 app.disable('x-powered-by')
+
+app.use('/auth', slackController.getAuth)
 
 if (process.env.NODE_ENV === 'development') {
   // only use in development
