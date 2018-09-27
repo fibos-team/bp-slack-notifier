@@ -4,7 +4,8 @@
   "description": "fibos bp slack notifier",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js",
+    "start": "node app.js",
     "lint": "./node_modules/.bin/eslint \"**/*.js\""
   },
   "repository": {
@@ -29,6 +30,12 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-node": "^7.0.1",
     "eslint-plugin-promise": "^4.0.1",
-    "eslint-plugin-standard": "^4.0.0"
+    "eslint-plugin-standard": "^4.0.0",
+    "nodemon": "^1.18.4"
+  },
+  "dependencies": {
+    "bottender": "^0.15.7",
+    "dotenv": "^6.0.0",
+    "request": "^2.88.0"
   }
 }
