@@ -2,7 +2,7 @@
  * @Author: PaddingMe (BP:liuqiangdong)
  * @Date: 2018-09-27 18:55:37
  * @Last Modified by: PaddingMe
- * @Last Modified time: 2018-09-28 01:35:48
+ * @Last Modified time: 2018-09-28 02:46:35
  */
 
 const { createServer } = require('bottender/express')
@@ -18,7 +18,7 @@ const path = require('path')
 
 dotenv.load({ path: '.env' })
 
-const { bot } = require('./service')
+const { bot } = require('./services')
 const app = createServer(bot)
 
 app.set('host', process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0')
