@@ -583,9 +583,9 @@ body-parser@^1.18.3:
     raw-body "2.3.3"
     type-is "~1.6.16"
 
-bottender@^0.15.7:
+bottender@paddingme/bottender:
   version "0.15.7"
-  resolved "https://registry.yarnpkg.com/bottender/-/bottender-0.15.7.tgz#c9f90b2b1aabd3ceff4250e69a05beea93412c6a"
+  resolved "https://codeload.github.com/paddingme/bottender/tar.gz/359c201461530e9a498f772726daba8dcce977a6"
   dependencies:
     "@slack/client" "^4.6.0"
     axios "^0.18.0"
