@@ -46,7 +46,7 @@ const handler = new SlackHandler()
       let { bpName, rank, isRegBP, isOnline } = await getStatus(receiveText) //eslint-disable-line
       if (bpName && (rank > 0)) {
         context.setState({ bpName })
-        await context.sendText(`订阅节点 ${bpName} 成功，当节点状态变化时，阿东会及时发送信息，请保持 slack 畅通。`)
+        await context.sendText(`订阅节点 ${bpName} 成功，当节点状态变化时，阿东会及时发送信息，请保持 slack 畅通。`, { token })
       } else {
         await context.sendText(`未查到你的 BP 节点，请重新输入 BP 名，或联系 liuqiangdong 。`, { token })
       }
