@@ -1,18 +1,17 @@
+/*
+ * @Author: PaddingMe (BP:liuqiangdong)
+ * @Date: 2018-09-30 20:38:48
+ * @Last Modified by: PaddingMe
+ * @Last Modified time: 2018-09-30 22:22:10
+ */
+
 const { SlackBot, MongoSessionStore, SlackHandler } = require('bottender')
 const getStatus = require('./status')
+const Slack = require('../models/Slack')
 
-// TODO take a test
-// OAUTH:teamId & acess_token => persistence
-// mapTeamToAccessToken getAccessTokenByTeamId
-const mapTeamToAccessToken = teamId => {
-  switch (teamId) {
-    case 'TD2HPMCTU':
-      return process.env.SLACK_ACCESS_TOKEN_2
-    case 'T9NJM4GBF':
-      return process.env.SLACK_ACCESS_TOKEN_1
-    default:
-      return process.env.SLACK_ACCESS_TOKEN_1
-  }
+const mapTeamToAccessToken = async (teamId) => {
+  const teamObj = await Slack.findOne({ teamId }).exec()
+  return teamObj.accessToken
 }
 
 const bot = new SlackBot({
@@ -31,7 +30,8 @@ const handler = new SlackHandler()
     let receiveText = context.event.text
 
     let teamId = context.session.user.team_id
-    let token = mapTeamToAccessToken(teamId)
+    let token = mapTeamToAccessToken(teamId) // TODO
+    // let token = process.env.SLACK_ACCESS_TOKEN
 
     // TODO 注意只能 添加到 public channel
     // TODO 增加所有 BP P2P 列表
