@@ -2,7 +2,7 @@
  * @Author: PaddingMe (BP:liuqiangdong)
  * @Date: 2018-09-27 18:55:37
  * @Last Modified by: PaddingMe
- * @Last Modified time: 2018-09-28 02:46:54
+ * @Last Modified time: 2018-09-30 18:24:42
  */
 
 const { createServer } = require('bottender/express')
@@ -13,6 +13,7 @@ const compression = require('compression')
 const logger = require('morgan')
 const chalk = require('chalk')
 const errorHandler = require('errorhandler')
+const mongoose = require('mongoose')
 const expressStatusMonitor = require('express-status-monitor')
 const path = require('path')
 
@@ -22,6 +23,16 @@ const slackController = require('./controllers/slack')
 
 const { bot } = require('./services')
 const app = createServer(bot)
+
+mongoose.set('useFindAndModify', false)
+mongoose.set('useCreateIndex', true)
+mongoose.set('useNewUrlParser', true)
+mongoose.connect(process.env.MONGODB_URI)
+mongoose.connection.on('error', (err) => {
+  console.error(err)
+  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'))
+  process.exit()
+})
 
 app.set('host', process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0')
 app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080)

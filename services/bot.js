@@ -1,4 +1,4 @@
-const { SlackBot, RedisSessionStore, SlackHandler } = require('bottender')
+const { SlackBot, MongoSessionStore, SlackHandler } = require('bottender')
 const getStatus = require('./status')
 
 // TODO take a test
@@ -19,7 +19,7 @@ const bot = new SlackBot({
   // accessToken: process.env.SLACK_ACCESS_TOKEN,
   mapTeamToAccessToken,
   verificationToken: process.env.SLACK_VERFICATION_TOKEN,
-  sessionStore: new RedisSessionStore()
+  sessionStore: new MongoSessionStore(process.env.MONGODB_URI)
 })
 
 const handler = new SlackHandler()
