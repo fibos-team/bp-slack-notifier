@@ -6,7 +6,7 @@
 
 ### MUST HAVE
 
-- [ ] 1. 我可以添加 slack 机器人『fibosbot』;
+- [x] 1. 我可以添加 slack 机器人『fibosbot』;
 - [ ] 1. 我可以通过 slack 接收我的 BP 节点的状态变化（online/offline/over21）;
 - [ ] 2. 我可以通过 slack 接收我的 BP 节点的投票排名变化通知以及谁增加/减少了投票；
 
@@ -90,4 +90,20 @@
 ### Todos:
 
 
-1. 每 30s 请求一次数据；
+- [ ] 1. 每 30s 请求一次数据;
+- [ ] 2. 优化 user 发送消息之后等待的时间，可以先加一个类似『Bot 正在查询中，请稍后.....』;
+- [ ] 3. 动态获取小红花节点，给出 rpc 链接数组 / P2P 链接数组；
+
+
+
+### 注意
+
+初步测试，Slack 添加机器人 oAuth permissions scope 应该包含：
+
+
+|scope|description|Remarks|
+|-----|-----------|
+|users:read|Access your workspace’s profile information||
+|bot|Add a bot user with the username @fibosbot||
+|chat:write:user|Send messages as user||
+|channels:read|Access information about user’s public channels|
