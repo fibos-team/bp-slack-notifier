@@ -102,8 +102,8 @@
 
 
 |scope|description|Remarks|
-|-----|-----------|
+|-----|-----------|-------|
 |users:read|Access your workspace’s profile information||
 |bot|Add a bot user with the username @fibosbot||
 |chat:write:user|Send messages as user||
-|channels:read|Access information about user’s public channels|
+|channels:read|Access information about user’s public channels||
