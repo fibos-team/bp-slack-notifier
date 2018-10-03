@@ -2,12 +2,13 @@
  * @Author: PaddingMe (BP:liuqiangdong)
  * @Date: 2018-09-30 20:38:48
  * @Last Modified by: PaddingMe
- * @Last Modified time: 2018-09-30 22:22:10
+ * @Last Modified time: 2018-10-03 14:25:35
  */
 
 const { SlackBot, MongoSessionStore, SlackHandler } = require('bottender')
 const getStatus = require('./status')
 const Slack = require('../models/Slack')
+const BP = require('../models/BP')
 
 const mapTeamToAccessToken = async (teamId) => {
   const teamObj = await Slack.findOne({ teamId }).exec()
@@ -30,22 +31,55 @@ const handler = new SlackHandler()
     let receiveText = context.event.text
 
     let teamId = context.session.user.team_id
-    let token = mapTeamToAccessToken(teamId) // TODO
-    // let token = process.env.SLACK_ACCESS_TOKEN
+    let channelId = context.session.channel.id
+    let token = await mapTeamToAccessToken(teamId)
 
-    // TODO 注意只能 添加到 public channel
-    // TODO 增加所有 BP P2P 列表
-    // TODO 解决消息重复两次的问题
-
+    let subscriberObj = {
+      teamId,
+      channelId,
+      accessToken: token
+    }
     // 检测第一次加入 channel 发出声音
     if (context.event._rawEvent.subtype === 'channel_join') {
       await context.sendText('Hi, 我是 Fibos BP 机器人阿东，请多指教。\r\n 请输入你的 12 位 BP 名，以便订阅通知。', { token })
 
     // 用户输入了 BP 名进行验证
     } else if (isReceiveText && receiveText.length === 12) {
+      context.sendText('正在查询 BP 节点信息，  请稍后......', { token })
       let { bpName, rank, isRegBP, isOnline } = await getStatus(receiveText) //eslint-disable-line
+
       if (bpName && (rank > 0)) {
-        context.setState({ bpName })
+        // 查询 该 BP & teamId & channelId 是否已经订阅
+        let existingBP = await BP.findOne({ name: bpName })
+
+        let existingSubscriber = await BP.findOne({
+          name: bpName,
+          subscribers: {
+            $elemMatch: subscriberObj
+          }
+        }).exec()
+
+        // 第一次订阅 BP,
+        if (!existingBP) {
+          let bp = new BP({
+            name: bpName,
+            subscribers: [subscriberObj]
+          })
+          await bp.save()
+        }
+
+        // 已经有 user 订阅该 BP
+        if (existingBP && !existingSubscriber) {
+          existingBP.subscribers.push(subscriberObj)
+          await existingBP.save()
+        }
+
+        // 已经订阅了
+        if (existingBP && existingSubscriber) {
+          await context.sendText(`已经订阅节点 ${bpName}。`, { token })
+          return false
+        }
+
         await context.sendText(`订阅节点 ${bpName} 成功，当节点状态变化时，阿东会及时发送信息，请保持 slack 畅通。`, { token })
       } else {
         await context.sendText(`未查到你的 BP 节点，请重新输入 BP 名，或联系 liuqiangdong 。`, { token })
@@ -57,7 +91,7 @@ const handler = new SlackHandler()
   })
   .onError(async context => {
     let teamId = context.session.user.team_id
-    let token = mapTeamToAccessToken(teamId)
+    let token = await mapTeamToAccessToken(teamId)
     await context.sendText('Aha, holy shit! Something wrong happened... feel free to contact liuqiangdong.', { token })
   })
 
