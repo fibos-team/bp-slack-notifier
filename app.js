@@ -2,7 +2,7 @@
  * @Author: PaddingMe (BP:liuqiangdong)
  * @Date: 2018-09-27 18:55:37
  * @Last Modified by: PaddingMe
- * @Last Modified time: 2018-09-30 18:24:42
+ * @Last Modified time: 2018-10-03 18:51:54
  */
 
 const { createServer } = require('bottender/express')
@@ -21,7 +21,7 @@ dotenv.load({ path: '.env' })
 
 const slackController = require('./controllers/slack')
 
-const { bot } = require('./services')
+const { bot, monitor } = require('./services')
 const app = createServer(bot)
 
 mongoose.set('useFindAndModify', false)
@@ -45,6 +45,8 @@ app.use(compression())
 app.use(expressStatusMonitor())
 app.use(logger('dev'))
 app.disable('x-powered-by')
+
+setInterval(() => monitor(), 30000)
 
 app.use('/auth', slackController.getAuth)
 

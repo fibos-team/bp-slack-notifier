@@ -2,7 +2,7 @@
  * @Author: PaddingMe (BP:liuqiangdong)
  * @Date: 2018-10-01 17:12:35
  * @Last Modified by: PaddingMe
- * @Last Modified time: 2018-10-03 13:05:22
+ * @Last Modified time: 2018-10-03 15:27:47
  */
 
 const mongoose = require('mongoose')
@@ -20,6 +20,12 @@ const bpSchema = new mongoose.Schema({
     teamId: String, // 订阅的 slack workspace ID
     channelId: String, // 订阅的 slack workspace channel ID
     accessToken: String // 订阅的 slack workspace 对应的 oAuth accesstoken
+  }],
+  status: [{
+    rank: Number, // BP 节点排名
+    isRegBP: Boolean, // BP 节点是否注册或被注销
+    isOnline: Boolean, // BP 出块服务器是否正常在线
+    updated: { type: Date, default: Date.now } // BP 状态更新时间
   }]
 })
 

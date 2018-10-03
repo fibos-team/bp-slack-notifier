@@ -2,7 +2,7 @@
  * @Author: PaddingMe (BP:liuqiangdong)
  * @Date: 2018-09-30 20:38:48
  * @Last Modified by: PaddingMe
- * @Last Modified time: 2018-10-03 14:25:35
+ * @Last Modified time: 2018-10-04 01:03:12
  */
 
 const { SlackBot, MongoSessionStore, SlackHandler } = require('bottender')
@@ -59,11 +59,19 @@ const handler = new SlackHandler()
           }
         }).exec()
 
-        // 第一次订阅 BP,
+        let status = {
+          rank: rank,
+          isRegBP: isRegBP,
+          isOnline: isOnline,
+          updated: new Date().getTime()
+        }
+        // 第一次订阅 BP
         if (!existingBP) {
+          subscriberObj.updated = new Date().getTime()
           let bp = new BP({
             name: bpName,
-            subscribers: [subscriberObj]
+            subscribers: [subscriberObj],
+            status: [status]
           })
           await bp.save()
         }
