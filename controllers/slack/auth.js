@@ -2,7 +2,7 @@
  * @Author: PaddingMe (BP: liuqiangdong)
  * @Date: 2018-09-28 02:32:02
  * @Last Modified by: PaddingMe
- * @Last Modified time: 2018-09-30 21:36:37
+ * @Last Modified time: 2018-10-03 14:18:35
  */
 
 const request = require('request')
@@ -31,7 +31,7 @@ const getAuth = (req, res) => {
       let existingTeam = await Slack.findOne({ teamId: obj.team_id }).exec()
 
       if (!existingTeam) {
-        await slack.save().exec
+        await slack.save()
       }
 
       return res.send('授权成功，打开 slack 邀请 fibosbot 进入你的 public channel。')
