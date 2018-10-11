@@ -2,7 +2,7 @@
  * @Author: PaddingMe (BP:liuqiangdong)
  * @Date: 2018-09-27 18:55:37
  * @Last Modified by: PaddingMe
- * @Last Modified time: 2018-10-03 18:51:54
+ * @Last Modified time: 2018-10-11 12:34:01
  */
 
 const { createServer } = require('bottender/express')
@@ -24,10 +24,16 @@ const slackController = require('./controllers/slack')
 const { bot, monitor } = require('./services')
 const app = createServer(bot)
 
-mongoose.set('useFindAndModify', false)
-mongoose.set('useCreateIndex', true)
-mongoose.set('useNewUrlParser', true)
-mongoose.connect(process.env.MONGODB_URI)
+const options = {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+  auto_reconnect: true,
+  poolSize: 10
+}
+
+mongoose.connect(process.env.MONGODB_URI, options)
+
 mongoose.connection.on('error', (err) => {
   console.error(err)
   console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'))
